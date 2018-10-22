@@ -1,6 +1,6 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-
+#include "utils.h"
 #include <QtSerialPort/QSerialPort>
 #include <QtSerialPort/QSerialPortInfo>
 #include <QDebug>
@@ -83,25 +83,10 @@ void MainWindow::on_OpenSerialButton_clicked()
 void MainWindow::ReadData()
 {
     QByteArray buf;
-    QString bufOut;
     buf = serial->readAll();
-
+    show_char(buf, ui->textEdit);
     qDebug() << buf << endl;
-    for (int i = 0; i < buf.length(); i++) {
-        qDebug() << QByteArray::number(buf[i], 16) << endl;
-        
-        bufOut.append(QByteArray::number(buf[i], 16) + " ");
-    }
 
-    if(!buf.isEmpty())
-    {
-        QString str = ui->textEdit->toPlainText();
-        str+= bufOut;
-        ui->textEdit->clear();  // 清楚接收缓冲
-        ui->textEdit->append(str);
-
-    }
-    buf.clear();
 }
 
 //发送按钮槽函数
